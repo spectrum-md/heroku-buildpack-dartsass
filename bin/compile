@@ -50,3 +50,7 @@ rm ./$DARTSASS_SOURCE_FILE
 
 mkdir -p vendor/dartsass
 mv sass vendor/dartsass/
+
+echo pwd
+ls -la vendor/dartsass/
+vendor/dartsass/sass --version
