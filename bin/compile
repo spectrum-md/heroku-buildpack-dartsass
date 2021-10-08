@@ -29,10 +29,6 @@ output() {
 header "Installing dartsass"
 
 cd $BUILD_DIR
-mkdir -p $VENDOR_DIR
-cd $VENDOR_DIR
-mkdir -p sass
-cd sass
 
 echo "Downloading $DARTSASS_URL" | output
 
@@ -54,7 +50,7 @@ rm ./$DARTSASS_SOURCE_FILE
 
 PROFILE_PATH="$BUILD_DIR/.profile.d/dartsass.sh"
 mkdir -p $(dirname $PROFILE_PATH)
-echo 'export PATH="$PATH:${HOME}/vendor/dartsass"' >> $PROFILE_PATH
+echo 'export PATH="$PATH:${BUILD_DIR}"' >> $PROFILE_PATH
 
 echo "Installation successful" | output
 
@@ -75,8 +71,8 @@ echo "Installation successful" | output
 echo $BUILD_DIR/.profile.d/dartsass.sh
 cat $BUILD_DIR/.profile.d/dartsass.sh
 
-echo ${HOME}/vendor/sass
-ls -la ${HOME}/vendor/sass
+echo ${BUILD_DIR}
+ls -la ${BUILD_DIR}
 
 source $BUILD_DIR/.profile.d/dartsass.sh
 which sass
