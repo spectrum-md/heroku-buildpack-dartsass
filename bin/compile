@@ -19,10 +19,16 @@ echo "-----> Install dartsass"
 if [ ! -f $CACHE_FILE ]; then
   echo "-----> Downloading dartsass from $DARTSASS_URL"
   wget $DARTSASS_URL -P $BUILD_DIR | indent
-  tar xzf $DARTSASS_SOURCE_FILE dart-sass/sass --strip-components 1 | indent
+  tar xzf $BUILD_DIR/$DARTSASS_SOURCE_FILE dart-sass/sass --strip-components 1 | indent
   mv sass $CACHE_FILE
 else
   echo "-----> Restoring $DARTSASS_SOURCE_FILE from cache"
 fi
 
-cp $CACHE_FILE $DARTSASS_BIN_DIR/sass | indent
+echo "-----> Updating environment variables"
+PROFILE_PATH="$BUILD_DIR/.profile.d/dartsass.sh"
+ACTUAL_INSTALL_PATH="$HOME/vendor/dartsass"
+mkdir -p $(dirname $PROFILE_PATH)
+echo "export PATH=$ACTUAL_INSTALL_PATH/bin:\$PATH" >> $PROFILE_PATH
+
+cp $CACHE_FILE $ACTUAL_INSTALL_PATH/bin/sass
