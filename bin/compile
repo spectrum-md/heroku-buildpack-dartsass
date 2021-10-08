@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 BUILD_DIR=$1
 CACHE_DIR=$2
@@ -48,31 +48,5 @@ fi
 
 rm ./$DARTSASS_SOURCE_FILE
 
-PROFILE_PATH="$BUILD_DIR/.profile.d/dartsass.sh"
-mkdir -p $(dirname $PROFILE_PATH)
-echo 'export PATH="$PATH:${BUILD_DIR}"' >> $PROFILE_PATH
-
-echo "Installation successful" | output
-
-# if [ ! -f $CACHE_FILE ]; then
-#   echo "-----> Downloading dartsass from $DARTSASS_URL"
-#   wget $DARTSASS_URL -P $BUILD_DIR | indent
-#   tar xzf $BUILD_DIR/$DARTSASS_SOURCE_FILE dart-sass/sass --strip-components 1 | indent
-#   mv sass $CACHE_FILE
-# else
-#   echo "-----> Restoring $DARTSASS_SOURCE_FILE from cache"
-# fi
-
-# echo "-----> Updating environment variables"
-# mkdir -p $BUILD_DIR/.heroku/dartsass/bin
-# cp $CACHE_FILE $BUILD_DIR/.heroku/dartsass/bin/sass
-# echo "export PATH=\"$BUILD_DIR/.heroku/dartsass/bin:\$PATH\"" > $BUILD_DIR/export
-
-echo $BUILD_DIR/.profile.d/dartsass.sh
-cat $BUILD_DIR/.profile.d/dartsass.sh
-
-echo ${BUILD_DIR}
-ls -la ${BUILD_DIR}
-
-source $BUILD_DIR/.profile.d/dartsass.sh
-which sass
+mkdir -p vendor/dartsass
+mv sass vendor/dartsass/
