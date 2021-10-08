@@ -53,4 +53,10 @@ mv sass vendor/dartsass/
 
 echo pwd
 ls -la vendor/dartsass/
-vendor/dartsass/sass --version
+
+export PATH=$PATH:$BUILD_DIR/vendor/dartsass
+which sass
+sass --version
+
+echo "export PATH=$PATH:$BUILD_DIR/vendor/dartsass" > export
+chmod +x export
