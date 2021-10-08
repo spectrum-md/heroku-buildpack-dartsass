@@ -51,15 +51,8 @@ rm ./$DARTSASS_SOURCE_FILE
 mkdir -p vendor/dartsass
 mv sass vendor/dartsass/
 
-pwd
-ls -la vendor/dartsass/
-
-export PATH=$PATH:$BUILD_DIR/vendor/dartsass
-which sass
-sass --version
-
 echo "echo \"dartsassahoy\"" > $BUILD_DIR/export
-echo "export PATH=$PATH:$BUILD_DIR/vendor/dartsass" >> $BUILD_DIR/export
+echo "export PATH=\"$PATH:$BUILD_DIR/vendor/dartsass\"" >> $BUILD_DIR/export
 chmod +x $BUILD_DIR/export
 
 echo $BUILD_DIR/export
