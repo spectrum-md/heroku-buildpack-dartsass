@@ -1,0 +1,28 @@
+#!/bin/bash
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+
+DARTSASS_BIN_DIR="${DARTSASS_BIN_DIR:-/usr/local/bin/}"
+DARTSASS_VERSION="${DARTSASS_VERSION:-1.43.1}"
+DARTSASS_SOURCE_FILE="dart-sass-$DARTSASS_VERSION-linux-x64.tar.gz"
+DARTSASS_URL="https://github.com/sass/dart-sass/releases/download/$DARTSASS_VERSION/$DARTSASS_SOURCE_FILE"
+
+CACHE_FILE="$CACHE_DIR/sass-$DARTSASS_VERSION"
+
+indent() {
+  sed -u 's/^/       /'
+}
+
+echo "-----> Install dartsass"
+
+if [ ! -f $CACHE_FILE ]; then
+  echo "-----> Downloading dartsass from $DARTSASS_URL"
+  wget $DARTSASS_URL -P $BUILD_DIR | indent
+  tar xzf $DARTSASS_SOURCE_FILE dart-sass/sass --strip-components 1 | indent
+  mv sass $CACHE_FILE
+else
+  echo "-----> Restoring $DARTSASS_SOURCE_FILE from cache"
+fi
+
+cp $CACHE_FILE $DARTSASS_BIN_DIR/sass | indent
