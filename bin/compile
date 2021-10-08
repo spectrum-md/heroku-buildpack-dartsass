@@ -35,3 +35,6 @@ cat $BUILD_DIR/export
 
 echo $BUILD_DIR/.heroku/dartsass/bin
 ls -la $BUILD_DIR/.heroku/dartsass/bin/
+
+source $BUILD_DIR/export
+which sass
