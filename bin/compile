@@ -75,8 +75,8 @@ echo "Installation successful" | output
 echo $BUILD_DIR/.profile.d/dartsass.sh
 cat $BUILD_DIR/.profile.d/dartsass.sh
 
-echo ${HOME}/vendor/dartsass
-ls -la ${HOME}/vendor/dartsass
+echo ${HOME}/vendor/sass
+ls -la ${HOME}/vendor/sass
 
 source $BUILD_DIR/.profile.d/dartsass.sh
 which sass
