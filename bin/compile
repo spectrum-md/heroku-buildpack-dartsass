@@ -26,10 +26,6 @@ else
 fi
 
 echo "-----> Updating environment variables"
-PROFILE_PATH="$BUILD_DIR/.profile.d/dartsass.sh"
-ACTUAL_INSTALL_PATH="$HOME/vendor/dartsass"
-mkdir -p $(dirname $PROFILE_PATH)
-echo "export PATH=$ACTUAL_INSTALL_PATH/bin:\$PATH" >> $PROFILE_PATH
-
-mkdir -p $HOME/vendor/dartsass/bin
-cp $CACHE_FILE $ACTUAL_INSTALL_PATH/bin/sass
+mkdir -p $BUILD_DIR/.heroku/dartsass/bin
+cp $CACHE_FILE $BUILD_DIR/.heroku/dartsass/bin/sass
+echo "export PATH=\"$BUILD_DIR/.heroku/dartsass/bin:\$PATH\"" > $BUILD_DIR/export
