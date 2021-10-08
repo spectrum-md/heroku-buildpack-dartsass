@@ -29,3 +29,9 @@ echo "-----> Updating environment variables"
 mkdir -p $BUILD_DIR/.heroku/dartsass/bin
 cp $CACHE_FILE $BUILD_DIR/.heroku/dartsass/bin/sass
 echo "export PATH=\"$BUILD_DIR/.heroku/dartsass/bin:\$PATH\"" > $BUILD_DIR/export
+
+echo $BUILD_DIR/export
+cat $BUILD_DIR/export
+
+echo $BUILD_DIR/.heroku/dartsass/bin
+ls -la $BUILD_DIR/.heroku/dartsass/bin/
