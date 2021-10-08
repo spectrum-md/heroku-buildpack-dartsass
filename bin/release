@@ -1,11 +1,3 @@
 #!/usr/bin/env bash
 
-set -ex
-
-BUILD_DIR=$1
-
 echo "---"
-echo "addons:"
-echo "config_vars:"
-echo "  PATH: $PATH:$BUILD_DIR/vendor/dartsass"
-echo "default_process_types:"
