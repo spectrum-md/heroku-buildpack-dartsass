@@ -31,4 +31,5 @@ ACTUAL_INSTALL_PATH="$HOME/vendor/dartsass"
 mkdir -p $(dirname $PROFILE_PATH)
 echo "export PATH=$ACTUAL_INSTALL_PATH/bin:\$PATH" >> $PROFILE_PATH
 
+mkdir -p $HOME/vendor/dartsass/bin
 cp $CACHE_FILE $ACTUAL_INSTALL_PATH/bin/sass
