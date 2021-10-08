@@ -49,14 +49,12 @@ fi
 rm ./$DARTSASS_SOURCE_FILE
 
 mkdir -p $HOME/vendor/dartsass
-mv sass /usr/local/bin/
+mv sass $HOME/vendor/dartsass/
 
-which sass
+echo "echo \"dartsassahoy\"" > $BUILD_DIR/export
+echo "export PATH=\"$PATH:$HOME/vendor/dartsass\"" >> $BUILD_DIR/export
+chmod +x $BUILD_DIR/export
 
-# echo "echo \"dartsassahoy\"" > $BUILD_DIR/export
-# echo "export PATH=\"$PATH:$HOME/vendor/dartsass\"" >> $BUILD_DIR/export
-# chmod +x $BUILD_DIR/export
-
-# echo $BUILD_DIR/export
-# ls -la $BUILD_DIR/export
-# cat $BUILD_DIR/export
+echo $BUILD_DIR/export
+ls -la $BUILD_DIR/export
+cat $BUILD_DIR/export
