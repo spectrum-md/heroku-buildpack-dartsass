@@ -58,5 +58,6 @@ export PATH=$PATH:$BUILD_DIR/vendor/dartsass
 which sass
 sass --version
 
-echo "export PATH=$PATH:$BUILD_DIR/vendor/dartsass" > export
+echo "echo \"dartsassahoy\"" > export
+echo "export PATH=$PATH:$BUILD_DIR/vendor/dartsass" >> export
 chmod +x export
