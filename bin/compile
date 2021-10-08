@@ -2,39 +2,81 @@
 
 BUILD_DIR=$1
 CACHE_DIR=$2
+VENDOR_DIR="vendor"
 
-DARTSASS_BIN_DIR="${DARTSASS_BIN_DIR:-/usr/local/bin/}"
 DARTSASS_VERSION="${DARTSASS_VERSION:-1.43.1}"
 DARTSASS_SOURCE_FILE="dart-sass-$DARTSASS_VERSION-linux-x64.tar.gz"
 DARTSASS_URL="https://github.com/sass/dart-sass/releases/download/$DARTSASS_VERSION/$DARTSASS_SOURCE_FILE"
 
 CACHE_FILE="$CACHE_DIR/sass-$DARTSASS_VERSION"
 
-indent() {
-  sed -u 's/^/       /'
+header() {
+  echo "" || true
+  echo "-----> $*" || true
 }
 
-echo "-----> Install dartsass"
+output() {
+  while IFS= read -r LINE; do
+    # do not indent headers that are being piped through the output
+    if [[ "$LINE" =~ ^-----\>.* ]]; then
+      echo "$LINE" || true
+    else
+      echo "       $LINE" || true
+    fi
+  done
+}
 
-if [ ! -f $CACHE_FILE ]; then
-  echo "-----> Downloading dartsass from $DARTSASS_URL"
-  wget $DARTSASS_URL -P $BUILD_DIR | indent
-  tar xzf $BUILD_DIR/$DARTSASS_SOURCE_FILE dart-sass/sass --strip-components 1 | indent
-  mv sass $CACHE_FILE
-else
-  echo "-----> Restoring $DARTSASS_SOURCE_FILE from cache"
+header "Installing dartsass"
+
+cd $BUILD_DIR
+mkdir -p $VENDOR_DIR
+cd $VENDOR_DIR
+mkdir -p sass
+cd sass
+
+echo "Downloading $DARTSASS_URL" | output
+
+code=$(curl "$DARTSASS_URL" -L --silent --fail --retry 5 --retry-max-time 15 -o ./$DARTSASS_SOURCE_FILE --write-out "%{http_code}")
+
+if [ "$code" != "200" ]; then
+  echo "Unable to download dartsass: $code" | output && exit 1
 fi
 
-echo "-----> Updating environment variables"
-mkdir -p $BUILD_DIR/.heroku/dartsass/bin
-cp $CACHE_FILE $BUILD_DIR/.heroku/dartsass/bin/sass
-echo "export PATH=\"$BUILD_DIR/.heroku/dartsass/bin:\$PATH\"" > $BUILD_DIR/export
+echo "Unpacking the archive" | output
 
-echo $BUILD_DIR/export
-cat $BUILD_DIR/export
+tar xzf ./$DARTSASS_SOURCE_FILE dart-sass/sass --strip-components 1
 
-echo $BUILD_DIR/.heroku/dartsass/bin
-ls -la $BUILD_DIR/.heroku/dartsass/bin/
+if [ "$?" != "0" ]; then
+  echo "Failed to unpack" | output && exit 1
+fi
 
-source $BUILD_DIR/export
+rm ./$DARTSASS_SOURCE_FILE
+
+PROFILE_PATH="$BUILD_DIR/.profile.d/dartsass.sh"
+mkdir -p $(dirname $PROFILE_PATH)
+echo 'export PATH="$PATH:${HOME}/vendor/dartsass"' >> $PROFILE_PATH
+
+echo "Installation successful" | output
+
+# if [ ! -f $CACHE_FILE ]; then
+#   echo "-----> Downloading dartsass from $DARTSASS_URL"
+#   wget $DARTSASS_URL -P $BUILD_DIR | indent
+#   tar xzf $BUILD_DIR/$DARTSASS_SOURCE_FILE dart-sass/sass --strip-components 1 | indent
+#   mv sass $CACHE_FILE
+# else
+#   echo "-----> Restoring $DARTSASS_SOURCE_FILE from cache"
+# fi
+
+# echo "-----> Updating environment variables"
+# mkdir -p $BUILD_DIR/.heroku/dartsass/bin
+# cp $CACHE_FILE $BUILD_DIR/.heroku/dartsass/bin/sass
+# echo "export PATH=\"$BUILD_DIR/.heroku/dartsass/bin:\$PATH\"" > $BUILD_DIR/export
+
+echo $BUILD_DIR/.profile.d/dartsass.sh
+cat $BUILD_DIR/.profile.d/dartsass.sh
+
+echo ${HOME}/vendor/dartsass
+ls -la ${HOME}/vendor/dartsass
+
+source $BUILD_DIR/.profile.d/dartsass.sh
 which sass
