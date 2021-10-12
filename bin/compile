@@ -1,15 +1,5 @@
 #!/usr/bin/env bash
 
-BUILD_DIR=$1
-CACHE_DIR=$2
-VENDOR_DIR="vendor"
-
-DARTSASS_VERSION="${DARTSASS_VERSION:-1.43.1}"
-DARTSASS_SOURCE_FILE="dart-sass-$DARTSASS_VERSION-linux-x64.tar.gz"
-DARTSASS_URL="https://github.com/sass/dart-sass/releases/download/$DARTSASS_VERSION/$DARTSASS_SOURCE_FILE"
-
-CACHE_FILE="$CACHE_DIR/sass-$DARTSASS_VERSION"
-
 header() {
   echo "" || true
   echo "-----> $*" || true
@@ -26,35 +16,10 @@ output() {
   done
 }
 
-header "Installing dartsass"
+header "PATH"
+echo $PATH | output
 
-cd $BUILD_DIR
+header "which sass"
+which sass | output
 
-echo "Downloading $DARTSASS_URL" | output
-
-code=$(curl "$DARTSASS_URL" -L --silent --fail --retry 5 --retry-max-time 15 -o ./$DARTSASS_SOURCE_FILE --write-out "%{http_code}")
-
-if [ "$code" != "200" ]; then
-  echo "Unable to download dartsass: $code" | output && exit 1
-fi
-
-echo "Unpacking the archive" | output
-
-tar xzf ./$DARTSASS_SOURCE_FILE dart-sass/sass --strip-components 1
-
-if [ "$?" != "0" ]; then
-  echo "Failed to unpack" | output && exit 1
-fi
-
-rm ./$DARTSASS_SOURCE_FILE
-
-mkdir -p $BUILD_DIR/vendor/dartsass
-mv sass $BUILD_DIR/vendor/dartsass/
-
-echo "echo \"dartsassahoy\"" > $BUILD_DIR/export
-echo "export PATH=\"$PATH:$BUILD_DIR/vendor/dartsass\"" >> $BUILD_DIR/export
-chmod +x $BUILD_DIR/export
-
-echo $BUILD_DIR/export
-ls -la $BUILD_DIR/export
-cat $BUILD_DIR/export
+exit 1
