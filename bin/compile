@@ -12,7 +12,7 @@ DARTSASS_URL="https://github.com/sass/dart-sass/releases/download/$DARTSASS_VERS
 CACHE_FILE="$CACHE_DIR/sass-$DARTSASS_VERSION"
 
 header() {
-  echo "\n" || true
+  echo -e "\n" || true
   echo "-----> $*" || true
 }
 
