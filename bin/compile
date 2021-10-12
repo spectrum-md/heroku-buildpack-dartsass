@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
-BUILD_DIR=$1
-CACHE_DIR=$2
-VENDOR_DIR="vendor"
+BUILD_DIR=${1:-}
+CACHE_DIR=${2:-}
+ENV_DIR=${3:-}
+BP_DIR=$(cd "$(dirname "${0:-}")"; cd ..; pwd)
 
 DARTSASS_VERSION="${DARTSASS_VERSION:-1.43.1}"
 DARTSASS_SOURCE_FILE="dart-sass-$DARTSASS_VERSION-linux-x64.tar.gz"
@@ -11,7 +12,7 @@ DARTSASS_URL="https://github.com/sass/dart-sass/releases/download/$DARTSASS_VERS
 CACHE_FILE="$CACHE_DIR/sass-$DARTSASS_VERSION"
 
 header() {
-  echo "" || true
+  echo "\n" || true
   echo "-----> $*" || true
 }
 
@@ -26,11 +27,40 @@ output() {
   done
 }
 
+create_env() {
+  # write_profile "$BP_DIR" "$BUILD_DIR"
+  write_export "$BP_DIR" "$BUILD_DIR"
+  # export_env_dir "$ENV_DIR"
+  # create_default_env "$YARN"
+}
+
+write_export() {
+  local bp_dir="$1"
+  local build_dir="$2"
+
+  # only write the export script if the buildpack directory is writable.
+  # this may occur in situations outside of Heroku, such as running the
+  # buildpacks locally.
+  if [ -w "$bp_dir" ]; then
+    # echo "export PATH=\"$build_dir/.heroku/node/bin:$build_dir/.heroku/yarn/bin:\$PATH:$build_dir/node_modules/.bin\"" > "$bp_dir/export"
+    # echo "export NODE_HOME=\"$build_dir/.heroku/node\"" >> "$bp_dir/export"
+
+    echo "echo \"dartsassahoy\"" > "$bp_dir/export"
+    echo "export PATH=\"$PATH:$BUILD_DIR/vendor/dartsass\"" >> "$bp_dir/export"
+  fi
+}
+
 header "BUILD_DIR"
 echo "$BUILD_DIR" | output
 
 header "CACHE_DIR"
 echo "$CACHE_DIR" | output
+
+header "ENV_DIR"
+echo "$ENV_DIR" | output
+
+header "BP_DIR"
+echo "$BP_DIR" | output
 
 header "cwd"
 pwd | output
@@ -60,10 +90,12 @@ rm ./$DARTSASS_SOURCE_FILE
 mkdir -p $BUILD_DIR/vendor/dartsass
 mv sass $BUILD_DIR/vendor/dartsass/
 
-echo "echo \"dartsassahoy\"" > $BUILD_DIR/export
-echo "export PATH=\"$PATH:$BUILD_DIR/vendor/dartsass\"" >> $BUILD_DIR/export
-chmod +x $BUILD_DIR/export
+create_env
 
-echo $BUILD_DIR/export
-ls -la $BUILD_DIR/export
-cat $BUILD_DIR/export
+# echo "echo \"dartsassahoy\"" > $BUILD_DIR/export
+# echo "export PATH=\"$PATH:$BUILD_DIR/vendor/dartsass\"" >> $BUILD_DIR/export
+# chmod +x $BUILD_DIR/export
+
+# echo $BUILD_DIR/export
+# ls -la $BUILD_DIR/export
+# cat $BUILD_DIR/export
