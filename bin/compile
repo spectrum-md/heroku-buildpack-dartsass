@@ -16,6 +16,15 @@ output() {
   done
 }
 
+header "BUILD_DIR"
+echo "$1" | output
+
+header "CACHE_DIR"
+echo "$2" | output
+
+header "cwd"
+pwd | output
+
 header "PATH"
 echo $PATH | output
 
