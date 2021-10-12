@@ -26,6 +26,15 @@ output() {
   done
 }
 
+header "BUILD_DIR"
+echo "$BUILD_DIR" | output
+
+header "CACHE_DIR"
+echo "$CACHE_DIR" | output
+
+header "cwd"
+pwd | output
+
 header "Installing dartsass"
 
 cd $BUILD_DIR
