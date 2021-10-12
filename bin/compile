@@ -46,7 +46,7 @@ write_export() {
     # echo "export NODE_HOME=\"$build_dir/.heroku/node\"" >> "$bp_dir/export"
 
     echo "echo \"dartsassahoy\"" > "$bp_dir/export"
-    echo "export PATH=\"$PATH:$BUILD_DIR/vendor/dartsass\"" >> "$bp_dir/export"
+    echo "export PATH=\"$PATH:$build_dir/.heroku/dartsass\"" >> "$bp_dir/export"
   fi
 }
 
@@ -87,8 +87,8 @@ fi
 
 rm ./$DARTSASS_SOURCE_FILE
 
-mkdir -p $BUILD_DIR/vendor/dartsass
-mv sass $BUILD_DIR/vendor/dartsass/
+mkdir -p $BUILD_DIR/.heroku/dartsass
+mv sass $BUILD_DIR/.heroku/dartsass
 
 create_env
 
