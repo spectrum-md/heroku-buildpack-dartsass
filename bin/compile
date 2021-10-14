@@ -53,6 +53,5 @@ mkdir -p $BUILD_DIR/.heroku/dartsass
 mv sass $BUILD_DIR/.heroku/dartsass
 
 if [ -w "$BP_DIR" ]; then
-  echo "echo \"dartsassahoy\"" > "$BP_DIR/export"
   echo "export PATH=\"$PATH:$BUILD_DIR/.heroku/dartsass\"" >> "$BP_DIR/export"
 fi
